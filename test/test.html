@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  
+</body>
+
+<script src="../dist/axios.js"></script>
+<script>
+axios.interceptors.request.use(function(config) {
+  console.info('request interceptor', config)
+  return config
+})
+
+axios.interceptors.request.use(function(config) {
+  console.info('request interceptor2222', config)
+  return config
+})
+
+axios.interceptors.response.use(function(response) {
+  console.info('response interceptor9999', response)
+  return response
+})
+
+let source  = axios.CancelToken.source()
+// 拦截器要先添加
+axios.get('https://www.jomoo.com.cn/portal/getRootCategories',{
+  cancelToken: source.token, 
+  headers:{
+    'Content-Type': 'application/json'
+  },
+  auth: {
+    // 会在请求头添加：headers['Authorization'] = 'Basic btoa("admin:admin")'
+    username: 'admin',
+    password: 'admin'
+  }
+}).then(function(response) {
+  console.log('[axios get]',response);
+}, function(err) {
+  console.log('中断',err);
+});
+
+setTimeout(() => {
+  // source.cancel()
+}, 1000);
+
+
+
+</script>
+</html>
